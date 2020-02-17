@@ -1,5 +1,19 @@
 # 12-employee-tracker
 Employe Tracker App
+needs
+ - _db.
+ - tables
+ - inquirer flow.
+    - view all employees
+        - display employees
+            - id(pk), first_name, last_name, title, department, salary, manager
+    - view all employees by department
+    - 
+    - view all employees by manager
+    - add employee 
+    - remove employee 
+    - update employee rold
+    - update employee manager
 
 Inquirer
 
