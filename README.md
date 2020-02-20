@@ -1,12 +1,38 @@
-# 12-employee-tracker
+ # 12-employee-tracker
 Employe Tracker App
 needs
  - _db.
  - tables
+    3 - employee, role, department
+- function for - what would you like to do inquiry.
+    - view all employees
+        - displays all employees and all info
+            - id(pk), first_name, last_name, title, department, salary, manager
+    - view all employees by department
+        - choose department from list 
+        - shows employes in that department
+    - view all employees by manager
+        - display manager list - select
+        - displays employees of that manager
+    - add employee 
+        - id(pk), prompt for first_name, last_name, title, department, salary, manager
+    - remove employee
+        - list employees by name
+        - choose employee to remove
+        - remove
+    - update employee Role
+        - list employees name - select name
+        - list roles - select roles
+        - update employee role
+    - update employee manager
+        - list employees name - select name
+        - list manager - select manager
+        - update employee manager
+    
+        
  - inquirer flow.
     - view all employees
         - display employees
-            - id(pk), first_name, last_name, title, department, salary, manager
     - view all employees by department
     - 
     - view all employees by manager
