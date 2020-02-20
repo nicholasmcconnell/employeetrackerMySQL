@@ -34,7 +34,7 @@ connection.connect(function (err) {
 async function start() {
   try {
     //get roles
-  //  await getManagers();
+    //  await getManagers();
     // console.log(managers);
     const action = await initialPrompt();
 
@@ -84,67 +84,94 @@ function viewEmployeesByDept() {
 //     // let id = res[0];
 //     // console.log();
 // });
-// console.log(manager);
 
 async function addEmployee() {
+  try {
+    
+    
+    
+    // const stringify = JSON.stringify(connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2'));
+    // const
+    const managers = await getManagers();
+    console.log(managers);
+    // console.log(JSON.stringify(managers, {depth: null}));
+    // console.log("1111  "+ managers.toString());
+    // const getCircularReplacer = (managers) => {
+    //   const seen = new WeakSet();
+    //   return (key, value) => {
+    //     if (typeof value === "object" && value !== null) {
+    //       if (seen.has(value)) {
+    //         return;
+    //       }
+    //       seen.add(value);
+    //     }
+    //     console.log("222 " + value.toString())
+    //     return value;
+    //   };
+    // };
 
-  // const stringify = JSON.stringify(connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2'));
-  // const
-  let managers = await getManagers();
-  console.log("inadd emp " + managers);
-  // // inquirer.prompt([
-  //   {
-  //     name: "first_name",
-  //     type: "input",
-  //     message: "First Name:",
-  //   },
-  //   {
-  //     name: "last_name",
-  //     type: "input",
-  //     message: "Last Name:",
-  //   },
-  //   {
-  //     name: "role",
-  //     type: "list",
-  //     message: "What is this employee's role?",
-  //     choices: [ "Salesperson", 
-  //     "Lead Engineer", 
-  //     "Software Engineer", 
-  //     "Manager", 
-  //     "Accountant"]
-  //   },
-  //   // {
-  //   //   name: "manager_id",
-  //   //   type: "list",
-  //   //   message: "Choose a manager:",
-  //   //   choices: managers.map(manager => ({name: manager.first_name + manager.last_name, value: manager.id}))
-  //   // }
+    // console.log("call " + JSON.stringify(managers, getCircularReplacer()));
+    // console.log("inadd emp " + JSON.stringify(managers));
+    // // inquirer.prompt([
+    //   {
+    //     name: "first_name",
+    //     type: "input",
+    //     message: "First Name:",
+    //   },
+    //   {
+    //     name: "last_name",
+    //     type: "input",
+    //     message: "Last Name:",
+    //   },
+    //   {
+    //     name: "role",
+    //     type: "list",
+    //     message: "What is this employee's role?",
+    //     choices: [ "Salesperson", 
+    //     "Lead Engineer", 
+    //     "Software Engineer", 
+    //     "Manager", 
+    //     "Accountant"]
+    //   },
+    //   // {
+    //   //   name: "manager_id",
+    //   //   type: "list",
+    //   //   message: "Choose a manager:",
+    //   //   choices: managers.map(manager => ({name: manager.first_name + manager.last_name, value: manager.id}))
+    //   // }
 
-  // ]).then(function (answer) {
-  //   // const roleID = cms.getRoleID(answer.role);
+    // ]).then(function (answer) {
+    //   // const roleID = cms.getRoleID(answer.role);
 
-  //   const employee = {
-  //     first_name: answer.first_name,
-  //     last_name: answer.last_name,
-  //     role_id: roleID,
-  //     manager_id: answer.manager_id
-  //   }
-  //   // console.log(cms.addEmployee(employee));
-  //   return employee;
-  // })
+    //   const employee = {
+    //     first_name: answer.first_name,
+    //     last_name: answer.last_name,
+    //     role_id: roleID,
+    //     manager_id: answer.manager_id
+    //   }
+    //   // console.log(cms.addEmployee(employee));
+    //   return employee;
+    // })
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 async function getManagers() {
-  let res = await connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2', function (err, res) {
-    // return(res);
-  });
-
-  console.log("hi " + res);
-  // const query = connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2');
-  // let string = JSON.stringify(query);
-  // const parse = JSON.parse(string);
-  // // const managers = parse;
-  // console.log(parse);
+  try {
+    let res = await connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2', function (err, res) {
+    });
+    console.log("getManagers function output = " + res);
+    return (res);
+    // console.log("hi " + res);
+    // const query = connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2');
+    // let string = JSON.stringify(query);
+    // const parse = JSON.parse(string);
+    // // const managers = parse;
+    // console.log(parse);
+  } catch (err) {
+    console.log(err);
+  }
 
 };
 
