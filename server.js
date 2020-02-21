@@ -132,85 +132,112 @@ async function createEmployee() {
         manager_id: answer.manager_id
       }
       // console.log(employee);
-    //  `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${employee.first_name}, ${employee.last_name}, ${employee.role_id}, ${employee.manager_id});`;
-     
-     addEmployee(employee)
+      //  `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${employee.first_name}, ${employee.last_name}, ${employee.role_id}, ${employee.manager_id});`;
+
+      addEmployee(employee)
     })
   } catch (err) {
     console.log(err);
   }
 }
 
-function addEmployee(employee){
+function addEmployee(employee) {
   console.log(employee);
 
   // var query = connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${employee.first_name}, ${employee.last_name}, ${employee.role_id}, ${employee.manager_id});`,
 
   let query = connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES 
       ('${ employee.first_name}', '${employee.last_name}', ${employee.role_id}, ${employee.manager_id});`,
-  
-  function (err, res) {
+
+    function (err, res) {
       if (err) throw err;
       console.log("Employee Added!")
-     
+      startEnd();
+
     })
 }
 
-function getRoleID(roleAnswer) {
-
-  // console.log(`111111 ${roleAnswer}`)
-
-  switch (roleAnswer) {
-    case "Lead Engineer":
-      return 1;
-    case "Manager":
-      return 2;
-    case "Sales Person":
-      return 3;
-    case "Accountant":
-      return 4;
-    case "Software Engineer":
-      return 5;
-    default:
-      break;
-  }
-};
-
-async function getManagers() {
+async function startEnd() {
   try {
+    inquirer.prompt([
+      {
+        name: "continue",
+        type: "list",
+        message: "Would you like to return 'home'? (Selecting now will close the application.)",
+        choices: ["Yes",
 
-    return await connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2').then(res => {
-      return res;
+          "No"]
+      }
 
-    });
+    ]).then(function (answer) {
 
+      if (answer.continue === 'Yes') {
+        start();
+      } else {
+        connection.end();
+      }
+    })
   } catch (err) {
     console.log(err);
   }
-
-};
-
-function removeEmployee() {
-
 }
 
-function updateEmployeeRole() {
 
-}
+  function getRoleID(roleAnswer) {
 
-function updateEmployeeManager() {
+    // console.log(`111111 ${roleAnswer}`)
 
-}
+    switch (roleAnswer) {
+      case "Lead Engineer":
+        return 1;
+      case "Manager":
+        return 2;
+      case "Sales Person":
+        return 3;
+      case "Accountant":
+        return 4;
+      case "Software Engineer":
+        return 5;
+      default:
+        break;
+    }
+  };
 
-function choicePrompt() {
-  switch (choice) {
-    case x:
-      // code block
-      break;
-    case y:
-      // code block
-      break;
-    default:
-    // code block
+  async function getManagers() {
+    try {
+
+      return await connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2').then(res => {
+        return res;
+
+      });
+
+    } catch (err) {
+      console.log(err);
+    }
+
+  };
+
+  function removeEmployee() {
+
   }
-}
+
+  function updateEmployeeRole() {
+
+  }
+
+  function updateEmployeeManager() {
+
+  }
+
+  function choicePrompt() {
+    switch (choice) {
+      case x:
+        // code block
+        break;
+      case y:
+        // code block
+        break;
+      default:
+      // code block
+    }
+  }
