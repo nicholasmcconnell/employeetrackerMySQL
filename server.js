@@ -46,8 +46,14 @@ async function start() {
       case "view all employees":
         await viewEmployees();
         break;
+      case "view all employees by department":
+        const department = await getDept();
+        // console.log(department);
+        // const deptID = getDeptID(department)
+        break;
       default:
-     }
+    }
+
     // if (choice.choice === "return home") {
     //   start();
     // } else {
@@ -78,21 +84,71 @@ async function initialPrompt() {
 async function viewEmployees() {
   try {
 
-    let query = connection.query(`SELECT * FROM employee`,
+    return await connection.query(`SELECT * FROM employee`).then(res => {
+      console.table(res)
+      return res;
 
-      function (err, res) {
-        if (err) throw err;
-        console.log(`${res.first_name}`)
-        startEnd();
+    });
 
-      })
+    // let query = connection.query(`SELECT * FROM employee`,
+
+    //   function (err, res) {
+    //     if (err) throw err;
+    //     console.log(`${res}`)
+    //     startEnd();
+
+    //   })
   } catch (err) {
     console.log(err)
   }
 }
 
-function viewEmployeesByDept() {
+async function getDept() {
+  //select departement - display employes in that id
+  try {
+    inquirer.prompt([
+      {
+        name: "department",
+        type: "list",
+        message: "Which department would you like to view?",
+        choices:
+          ["Management",
+            "Sales",
+            "Accounting",
+            "Engineering",
+            "Legal"]
+      }
 
+    ]).then(function (answer) {
+
+      let departement = answer.department;
+      console.log(`1111 ${departement}`);
+      // return departement;
+      getDeptID(departement);
+
+      // let departmentID = connection.query('SELECT id FROM role WHERE title=?', answer.department)
+      // console.log("dept id " + departmentID);
+      // connection.query("SELECT * FROM employee where role_id= ?", answer.department),
+      // function (err, res){
+      //   if(err) throw err;
+      //   console.log(res);
+      //   return
+      // }
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function getDeptID(department) {
+  try {
+    let departmentID = connection.query('SELECT * FROM role WHERE title=?', department)
+    console.log(departmentID);
+
+
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 
