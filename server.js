@@ -28,6 +28,7 @@ connection.connect(function (err) {
   // const managers = getManagers();
   // console.log(`hi ${managers}`);
 });
+connection.query = util.promisify(connection.query);
 
 //datatpase query for rolls and managers
 
@@ -40,7 +41,7 @@ async function start() {
 
     switch (action.action) {
       case "add employee":
-        addEmployee();
+        createEmployee();
         break;
       default:
       // code block
@@ -85,90 +86,101 @@ function viewEmployeesByDept() {
 //     // console.log();
 // });
 
-async function addEmployee() {
+async function createEmployee() {
   try {
-    
-    
-    
-    // const stringify = JSON.stringify(connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2'));
-    // const
+
     const managers = await getManagers();
-    console.log(managers);
-    // console.log(JSON.stringify(managers, {depth: null}));
-    // console.log("1111  "+ managers.toString());
-    // const getCircularReplacer = (managers) => {
-    //   const seen = new WeakSet();
-    //   return (key, value) => {
-    //     if (typeof value === "object" && value !== null) {
-    //       if (seen.has(value)) {
-    //         return;
-    //       }
-    //       seen.add(value);
-    //     }
-    //     console.log("222 " + value.toString())
-    //     return value;
-    //   };
-    // };
 
-    // console.log("call " + JSON.stringify(managers, getCircularReplacer()));
-    // console.log("inadd emp " + JSON.stringify(managers));
-    // // inquirer.prompt([
-    //   {
-    //     name: "first_name",
-    //     type: "input",
-    //     message: "First Name:",
-    //   },
-    //   {
-    //     name: "last_name",
-    //     type: "input",
-    //     message: "Last Name:",
-    //   },
-    //   {
-    //     name: "role",
-    //     type: "list",
-    //     message: "What is this employee's role?",
-    //     choices: [ "Salesperson", 
-    //     "Lead Engineer", 
-    //     "Software Engineer", 
-    //     "Manager", 
-    //     "Accountant"]
-    //   },
-    //   // {
-    //   //   name: "manager_id",
-    //   //   type: "list",
-    //   //   message: "Choose a manager:",
-    //   //   choices: managers.map(manager => ({name: manager.first_name + manager.last_name, value: manager.id}))
-    //   // }
+    inquirer.prompt([
+      {
+        name: "first_name",
+        type: "input",
+        message: "First Name:",
+      },
+      {
+        name: "last_name",
+        type: "input",
+        message: "Last Name:",
+      },
+      {
+        name: "role",
+        type: "list",
+        message: "What is this employee's role?",
+        choices: ["Sales Person",
+          "Lead Engineer",
+          "Software Engineer",
+          "Manager",
+          "Accountant"]
+      },
+      {
+        name: "manager_id",
+        type: "list",
+        message: "Choose a manager:",
+        choices: managers.map(manager => ({ name: manager.first_name + manager.last_name, value: manager.id }))
+      }
 
-    // ]).then(function (answer) {
-    //   // const roleID = cms.getRoleID(answer.role);
+    ]).then(function (answer) {
 
-    //   const employee = {
-    //     first_name: answer.first_name,
-    //     last_name: answer.last_name,
-    //     role_id: roleID,
-    //     manager_id: answer.manager_id
-    //   }
-    //   // console.log(cms.addEmployee(employee));
-    //   return employee;
-    // })
+      console.log(answer.role);
+
+      const roleID = getRoleID(answer.role);
+
+      const employee = {
+        first_name: answer.first_name,
+        last_name: answer.last_name,
+        role_id: roleID,
+        manager_id: answer.manager_id
+      }
+      // console.log(employee);
+     `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${employee.first_name}, ${employee.last_name}, ${employee.role_id}, ${employee.manager_id});`;
+     
+     addEmployee(employee)
+    })
   } catch (err) {
     console.log(err);
   }
 }
 
+function addEmployee(employee){
+  console.log(employee);
+
+  var query = connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${employee.first_name}, ${employee.last_name}, ${employee.role_id}, ${employee.manager_id});`,
+  
+  function(err, res) {
+      if (err) throw err;
+      console.log("Employee Added!")
+     
+    })
+}
+
+function getRoleID(roleAnswer) {
+
+  // console.log(`111111 ${roleAnswer}`)
+
+  switch (roleAnswer) {
+    case "Lead Engineer":
+      return 1;
+    case "Manager":
+      return 2;
+    case "Sales Person":
+      return 3;
+    case "Accountant":
+      return 4;
+    case "Software Engineer":
+      return 5;
+    default:
+      break;
+  }
+};
+
 async function getManagers() {
   try {
-    let res = await connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2', function (err, res) {
+
+    return await connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2').then(res => {
+      return res;
+
     });
-    console.log("getManagers function output = " + res);
-    return (res);
-    // console.log("hi " + res);
-    // const query = connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2');
-    // let string = JSON.stringify(query);
-    // const parse = JSON.parse(string);
-    // // const managers = parse;
-    // console.log(parse);
+
   } catch (err) {
     console.log(err);
   }
@@ -199,7 +211,3 @@ function choicePrompt() {
     // code block
   }
 }
-
-
-// 
-// console.log(connection.query('SELECT id, first_name, last_name FROM employee WHERE role_id = 2', ));
