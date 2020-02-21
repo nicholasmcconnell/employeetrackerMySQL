@@ -132,7 +132,7 @@ async function createEmployee() {
         manager_id: answer.manager_id
       }
       // console.log(employee);
-     `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${employee.first_name}, ${employee.last_name}, ${employee.role_id}, ${employee.manager_id});`;
+    //  `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${employee.first_name}, ${employee.last_name}, ${employee.role_id}, ${employee.manager_id});`;
      
      addEmployee(employee)
     })
@@ -144,9 +144,12 @@ async function createEmployee() {
 function addEmployee(employee){
   console.log(employee);
 
-  var query = connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${employee.first_name}, ${employee.last_name}, ${employee.role_id}, ${employee.manager_id});`,
+  // var query = connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${employee.first_name}, ${employee.last_name}, ${employee.role_id}, ${employee.manager_id});`,
+
+  let query = connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES 
+      ('${ employee.first_name}', '${employee.last_name}', ${employee.role_id}, ${employee.manager_id});`,
   
-  function(err, res) {
+  function (err, res) {
       if (err) throw err;
       console.log("Employee Added!")
      
