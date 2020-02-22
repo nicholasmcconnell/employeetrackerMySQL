@@ -31,7 +31,7 @@ connection.connect(function (err) {
 connection.query = util.promisify(connection.query);
 
 //datatpase query for rolls and managers
-
+//CONTROL FUNCTIONS
 async function start() {
   try {
     //get roles
@@ -80,7 +80,7 @@ async function initialPrompt() {
   })
   return action;
 }
-
+//VIEW EMPLOYLEE
 async function viewEmployees() {
   try {
 
@@ -121,10 +121,46 @@ async function getDept() {
 
     ]).then(function (answer) {
 
-      let departement = answer.department;
-      console.log(`1111 ${departement}`);
+      let department = answer.department;
+      console.log(`1111 ${department}`);
       // return departement;
-      getDeptID(departement);
+      let departmentID = getDeptID(department);
+      console.log("1111111");
+      console.log(departmentID);
+
+      let employees = connection.query(`SELECT * FROM employee`).then(res => {
+        console.log("22222222")
+        console.log(res)
+        return res;
+  
+      });
+      const employeeArr = [];
+//loop goes through if roleid = matching departmentid then push employee to
+      for (const employee of employees) {
+        switch (employee.role_id) {
+          case "Lead Engineer":
+            return 1;
+          case "Manager":
+            return 2;
+          case "Sales Person":
+            return 3;
+          case "Accountant":
+            return 4;
+          case "Software Engineer":
+            return 5;
+          default:
+            break;
+        }
+        
+      }
+  
+
+      
+
+
+
+
+
 
       // let departmentID = connection.query('SELECT id FROM role WHERE title=?', answer.department)
       // console.log("dept id " + departmentID);
@@ -140,18 +176,18 @@ async function getDept() {
   }
 }
 
-async function getDeptID(department) {
-  try {
-    let departmentID = connection.query('SELECT * FROM role WHERE title=?', department)
-    console.log(departmentID);
+// async function getDeptIDOLD(department) {
+//   try {
+//     let departmentID = connection.query('SELECT * FROM role WHERE title=?', department)
+//     console.log(departmentID);
 
 
-  } catch (err) {
-    console.log(err);
-  }
-}
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 
-
+//ADD EMPLOYEE
 async function createEmployee() {
   try {
 
@@ -219,7 +255,7 @@ function addEmployee(employee) {
 
     })
 }
-
+//START/END
 async function startEnd() {
   try {
     inquirer.prompt([
@@ -245,7 +281,23 @@ async function startEnd() {
   }
 };
 
+function getDeptID(department){
 
+  switch (department) {
+    case "Management":
+      return 1;
+    case "Sales":
+      return 2;
+    case "Accounting":
+      return 3;
+    case "Engineering":
+      return 4;
+    case "Legal":
+      return 5;
+    default:
+      break;
+  }
+}
 function getRoleID(roleAnswer) {
 
   // console.log(`111111 ${roleAnswer}`)
@@ -266,6 +318,7 @@ function getRoleID(roleAnswer) {
   }
 };
 
+/////GET MANAGERS
 async function getManagers() {
   try {
 
