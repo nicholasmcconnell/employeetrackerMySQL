@@ -60,6 +60,10 @@ async function start() {
         await createRole();
         startEnd();
         break;
+        case "add department":
+          await createDept();
+          startEnd();
+          break;
       default:
     }
 
@@ -83,7 +87,7 @@ async function initialPrompt() {
       "view all roles",
       "add employee",
       "add role",
-      , "remove employee",
+      "add department",
       "update employee role",
       "update employee manager",
       "exit"]
@@ -367,6 +371,37 @@ async function addRole(role, salary, deptId) {
     function (err, res) {
       if (err) throw err;
       console.log("Role Added!")
+      // startEnd();
+
+    })
+}
+
+async function createDept(){
+  try {
+
+    await inquirer.prompt([
+      {
+        name: "new_dept",
+        type: "input",
+        message: "Enter new department: ",
+      }
+    ]).then(function (answer) {
+
+      let dept = answer.new_dept
+      addDept(dept);
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function addDept(dept){
+  let query = connection.query(`INSERT INTO department (name) VALUES 
+      ('${dept}');`,
+
+    function (err, res) {
+      if (err) throw err;
+      console.log("Department added!")
       // startEnd();
 
     })
