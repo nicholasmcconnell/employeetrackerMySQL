@@ -46,7 +46,7 @@ async function start() {
       case "view all employees":
         await viewEmployees();
         break;
-      case "view all employees by department":
+      case "view all departments":
         const department = await getDept();
         // console.log(department);
         // const deptID = getDeptID(department)
@@ -70,7 +70,7 @@ async function initialPrompt() {
     type: "list",
     message: "What would you like to do?",
     choices: ["view all employees",
-      "view all employees by department",
+      "view all departments",
       "view employees by manager",
       "add employee",
       "remove employee",

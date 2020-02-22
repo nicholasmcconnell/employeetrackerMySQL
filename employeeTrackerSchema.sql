@@ -80,3 +80,7 @@ SELECT * FROM department;
     
     -- CASCADE delets parent and child row, default does not let you delete pasrenet (RESTRICT)
 
+    3 table join list all empoloyess by DESCRIPTION
+    1. dept alphabetical
+    
+
