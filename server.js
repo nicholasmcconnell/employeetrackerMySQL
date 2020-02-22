@@ -42,12 +42,27 @@ async function start() {
     switch (action.action) {
       case "add employee":
         await createEmployee();
+        startEnd();
         break;
       case "view all employees":
         await viewEmployees();
+        startEnd();
         break;
       case "view all departments":
-        const department = await getDept();
+        await viewDept();
+        startEnd();
+        // console.log(department);
+        // const deptID = getDeptID(department)
+        break;
+      case "view all roles":
+        await viewRoles();
+        startEnd();
+        // console.log(department);
+        // const deptID = getDeptID(department)
+        break;
+        case "add role":
+        await createDept();
+        startEnd();
         // console.log(department);
         // const deptID = getDeptID(department)
         break;
@@ -71,9 +86,10 @@ async function initialPrompt() {
     message: "What would you like to do?",
     choices: ["view all employees",
       "view all departments",
-      "view employees by manager",
+      "view all roles",
       "add employee",
-      "remove employee",
+      "add role",
+,     "remove employee",
       "update employee role",
       "update employee manager",
       "exit"]
@@ -95,13 +111,58 @@ async function viewEmployees() {
     //   function (err, res) {
     //     if (err) throw err;
     //     console.log(`${res}`)
-    //     startEnd();
+    // startEnd();
+
+    //   })
+  } catch (err) {
+    console.log(err)
+  }
+};
+
+async function viewDept() {
+  try {
+
+    return await connection.query(`SELECT name FROM department`).then(res => {
+      console.table(res)
+      return res;
+
+    });
+
+    // let query = connection.query(`SELECT * FROM employee`,
+
+    //   function (err, res) {
+    //     if (err) throw err;
+    //     console.log(`${res}`)
+    // startEnd();
 
     //   })
   } catch (err) {
     console.log(err)
   }
 }
+
+async function viewRoles() {
+  try {
+
+    return await connection.query(`SELECT title FROM role`).then(res => {
+      console.table(res)
+      return res;
+
+    });
+
+    // let query = connection.query(`SELECT * FROM employee`,
+
+    //   function (err, res) {
+    //     if (err) throw err;
+    //     console.log(`${res}`)
+    // startEnd();
+
+    //   })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 
 async function getDept() {
   //select departement - display employes in that id
@@ -132,10 +193,10 @@ async function getDept() {
         console.log("22222222")
         console.log(res)
         return res;
-  
+
       });
       const employeeArr = [];
-//loop goes through if roleid = matching departmentid then push employee to
+      //loop goes through if roleid = matching departmentid then push employee to
       for (const employee of employees) {
         switch (employee.role_id) {
           case "Lead Engineer":
@@ -151,11 +212,11 @@ async function getDept() {
           default:
             break;
         }
-        
-      }
-  
 
-      
+      }
+
+
+
 
 
 
@@ -255,6 +316,38 @@ function addEmployee(employee) {
 
     })
 }
+
+async function createDept() {
+  try {
+
+    // const managers = await getManagers();
+
+    inquirer.prompt([
+      {
+        name: "new_role",
+        type: "input",
+        message: "Enter new role: ",
+      },
+
+    ]).then(function (answer) {
+
+      console.log(answer.new_role);
+
+      // const employee = {
+      //   first_name: answer.first_name,
+      //   last_name: answer.last_name,
+      //   role_id: roleID,
+      //   manager_id: answer.manager_id
+      // }
+      // // console.log(employee);
+      // //  `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${employee.first_name}, ${employee.last_name}, ${employee.role_id}, ${employee.manager_id});`;
+
+      // addEmployee(employee)
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}
 //START/END
 async function startEnd() {
   try {
@@ -281,7 +374,7 @@ async function startEnd() {
   }
 };
 
-function getDeptID(department){
+function getDeptID(department) {
 
   switch (department) {
     case "Management":
