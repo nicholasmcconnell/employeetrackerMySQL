@@ -60,9 +60,7 @@ async function start() {
         startEnd();
         break;
       case "update employee role":
-        console.log("11111111");
         await employeeRoleUpdate();
-   
         break;
       case "exit":
         startEnd();
