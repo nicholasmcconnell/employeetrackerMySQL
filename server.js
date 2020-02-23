@@ -62,7 +62,7 @@ async function start() {
       case "update employee role":
         console.log("11111111");
         await employeeRoleUpdate();
-        // startEnd();
+   
         break;
       case "exit":
         startEnd();
@@ -125,14 +125,7 @@ async function viewDept() {
 
     });
 
-    // let query = connection.query(`SELECT * FROM employee`,
-
-    //   function (err, res) {
-    //     if (err) throw err;
-    //     console.log(`${res}`)
-    // startEnd();
-
-    //   })
+  
   } catch (err) {
     console.log(err)
   }
@@ -147,14 +140,6 @@ async function viewRoles() {
 
     });
 
-    // let query = connection.query(`SELECT * FROM employee`,
-
-    //   function (err, res) {
-    //     if (err) throw err;
-    //     console.log(`${res}`)
-    // startEnd();
-
-    //   })
   } catch (err) {
     console.log(err)
   }
