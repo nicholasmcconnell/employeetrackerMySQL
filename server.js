@@ -66,10 +66,15 @@ async function start() {
         break;
       case "update employee role":
         console.log("11111111");
-        await updateEmployeeRole();
+        await employeeRoleUpdate();
         // startEnd();
         break;
+      case "exit":
+        startEnd();
+        break;
       default:
+        startEnd();
+
     }
 
     // if (choice.choice === "return home") {
@@ -94,12 +99,11 @@ async function initialPrompt() {
       "add role",
       "add department",
       "update employee role",
-      "update employee manager",
       "exit"]
   })
   return action;
 }
-//VIEW EMPLOYLEE
+//VIEW
 async function viewEmployees() {
   try {
 
@@ -165,91 +169,6 @@ async function viewRoles() {
     console.log(err)
   }
 }
-
-
-// async function getDept() {
-//   //select departement - display employes in that id
-//   try {
-//     inquirer.prompt([
-//       {
-//         name: "department",
-//         type: "list",
-//         message: "Which department would you like to view?",
-//         choices:
-//           ["Management",
-//             "Sales",
-//             "Accounting",
-//             "Engineering",
-//             "Legal"]
-//       }
-
-//     ]).then(function (answer) {
-
-//       let department = answer.department;
-//       console.log(`1111 ${department}`);
-//       // return departement;
-//       let departmentID = getDeptID(department);
-//       console.log("1111111");
-//       console.log(departmentID);
-
-//       let employees = connection.query(`SELECT * FROM employee`).then(res => {
-//         console.log("22222222")
-//         console.log(res)
-//         return res;
-
-//       });
-//       const employeeArr = [];
-//       //loop goes through if roleid = matching departmentid then push employee to
-//       for (const employee of employees) {
-//         switch (employee.role_id) {
-//           case "Lead Engineer":
-//             return 1;
-//           case "Manager":
-//             return 2;
-//           case "Sales Person":
-//             return 3;
-//           case "Accountant":
-//             return 4;
-//           case "Software Engineer":
-//             return 5;
-//           default:
-//             break;
-//         }
-
-//       }
-
-
-
-
-
-
-
-
-
-//       // let departmentID = connection.query('SELECT id FROM role WHERE title=?', answer.department)
-//       // console.log("dept id " + departmentID);
-//       // connection.query("SELECT * FROM employee where role_id= ?", answer.department),
-//       // function (err, res){
-//       //   if(err) throw err;
-//       //   console.log(res);
-//       //   return
-//       // }
-//     })
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
-
-// async function getDeptIDOLD(department) {
-//   try {
-//     let departmentID = connection.query('SELECT * FROM role WHERE title=?', department)
-//     console.log(departmentID);
-
-
-//   } catch (err) {
-//     console.log(err);
-//   }
-// }
 
 //ADD EMPLOYEE
 async function createEmployee() {
@@ -319,29 +238,57 @@ function addEmployee(employee) {
 
     })
 }
-
-async function updateEmployeeRole() {
+//UPDATE ROLE
+async function employeeRoleUpdate() {
   try {
+    console.log("2222222");
     console.log("employees");
     const employees = await getEmployee();
+    const roles = await getRole();
 
     await inquirer.prompt([
       {
         name: "employee",
         type: "list",
-        message: "Choose an employee:",
+        message: "Choose an employee to update:",
         choices: employees.map(employee => ({ name: employee.first_name + employee.last_name, value: employee.id }))
+      },
+      {
+        name: "role",
+        type: "list",
+        message: "Choose an role:",
+        choices: roles.map(role => ({ name: role.title, value: role.id }))
       }
 
     ]).then(function (answer) {
+      console.log("===========")
 
-      console.log(answer);
+      console.log(answer.role, answer.employee);
+      let role = answer.role;
+      let employee = answer.employee;
+      newRole(employee, role);
 
     })
+
   } catch (err) {
     console.log(err);
+
   }
 }
+
+function newRole(employee, role) {
+  let query = connection.query(`UPDATE employee set role_id = ${role} WHERE id=${employee};`,
+
+    // (`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES 
+    //     ('${ employee.first_name}', '${employee.last_name}', ${employee.role_id}, ${employee.manager_id});`
+
+    function (err, res) {
+      if (err) throw err;
+      console.log("Role Updated!");
+
+    })
+  startEnd();
+};
 
 async function createRole() {
   try {
@@ -460,23 +407,6 @@ async function startEnd() {
   }
 };
 
-function getDeptID(department) {
-
-  switch (department) {
-    case "Management":
-      return 1;
-    case "Sales":
-      return 2;
-    case "Accounting":
-      return 3;
-    case "Engineering":
-      return 4;
-    case "Legal":
-      return 5;
-    default:
-      break;
-  }
-}
 function getRoleID(roleAnswer) {
 
   // console.log(`111111 ${roleAnswer}`)
@@ -540,27 +470,17 @@ async function getEmployee() {
 
 };
 
-function removeEmployee() {
+async function getRole() {
+  try {
 
-}
+    return await connection.query('SELECT id, title FROM role').then(res => {
+      return res;
 
-function updateEmployeeRole() {
+    });
 
-}
-
-function updateEmployeeManager() {
-
-}
-
-function choicePrompt() {
-  switch (choice) {
-    case x:
-      // code block
-      break;
-    case y:
-      // code block
-      break;
-    default:
-    // code block
+  } catch (err) {
+    console.log(err);
   }
+
 }
+
