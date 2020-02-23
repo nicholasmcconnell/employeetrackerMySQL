@@ -60,10 +60,15 @@ async function start() {
         await createRole();
         startEnd();
         break;
-        case "add department":
-          await createDept();
-          startEnd();
-          break;
+      case "add department":
+        await createDept();
+        startEnd();
+        break;
+      case "update employee role":
+        console.log("11111111");
+        await updateEmployeeRole();
+        // startEnd();
+        break;
       default:
     }
 
@@ -315,6 +320,29 @@ function addEmployee(employee) {
     })
 }
 
+async function updateEmployeeRole() {
+  try {
+    console.log("employees");
+    const employees = await getEmployee();
+
+    await inquirer.prompt([
+      {
+        name: "employee",
+        type: "list",
+        message: "Choose an employee:",
+        choices: employees.map(employee => ({ name: employee.first_name + employee.last_name, value: employee.id }))
+      }
+
+    ]).then(function (answer) {
+
+      console.log(answer);
+
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 async function createRole() {
   try {
 
@@ -363,8 +391,8 @@ async function createRole() {
 }
 
 async function addRole(role, salary, deptId) {
-//titel
-// managers.map(manager => ({ name: manager.first_name + manager.last_name, value: manager.id }))
+  //titel
+  // managers.map(manager => ({ name: manager.first_name + manager.last_name, value: manager.id }))
   let query = connection.query(`INSERT INTO role (title, salary, department_id) VALUES 
       ('${role}', '${salary}', ${deptId});`,
 
@@ -376,7 +404,7 @@ async function addRole(role, salary, deptId) {
     })
 }
 
-async function createDept(){
+async function createDept() {
   try {
 
     await inquirer.prompt([
@@ -395,7 +423,7 @@ async function createDept(){
   }
 }
 
-function addDept(dept){
+function addDept(dept) {
   let query = connection.query(`INSERT INTO department (name) VALUES 
       ('${dept}');`,
 
@@ -469,7 +497,7 @@ function getRoleID(roleAnswer) {
   }
 };
 
-/////GET MANAGERS
+/////GET'S
 async function getManagers() {
   try {
 
@@ -488,6 +516,20 @@ async function getDept() {
   try {
 
     return await connection.query('SELECT id, name FROM department').then(res => {
+      return res;
+
+    });
+
+  } catch (err) {
+    console.log(err);
+  }
+
+};
+
+async function getEmployee() {
+  try {
+
+    return await connection.query('SELECT id, first_name, last_name FROM employee').then(res => {
       return res;
 
     });
