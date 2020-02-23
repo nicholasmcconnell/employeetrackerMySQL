@@ -25,18 +25,13 @@ connection.connect(function (err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId + "\n");
   start();
-  // const managers = getManagers();
-  // console.log(`hi ${managers}`);
 });
 connection.query = util.promisify(connection.query);
 
-//datatpase query for rolls and managers
 //CONTROL FUNCTIONS
 async function start() {
   try {
-    //get roles
-    //  await getManagers();
-    // console.log(managers);
+ 
     const action = await initialPrompt();
 
     switch (action.action) {
@@ -77,11 +72,6 @@ async function start() {
 
     }
 
-    // if (choice.choice === "return home") {
-    //   start();
-    // } else {
-    //   actionChooser(action.action, choice.choice);
-    // }
   } catch (err) {
     console.log(err);
   }
@@ -206,8 +196,6 @@ async function createEmployee() {
 
     ]).then(function (answer) {
 
-      console.log(answer.role);
-
       const roleID = getRoleID(answer.role);
 
       const employee = {
@@ -216,9 +204,7 @@ async function createEmployee() {
         role_id: roleID,
         manager_id: answer.manager_id
       }
-      // console.log(employee);
-      //  `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${employee.first_name}, ${employee.last_name}, ${employee.role_id}, ${employee.manager_id});`;
-
+      
       addEmployee(employee)
     })
   } catch (err) {
@@ -241,8 +227,7 @@ function addEmployee(employee) {
 //UPDATE ROLE
 async function employeeRoleUpdate() {
   try {
-    console.log("2222222");
-    console.log("employees");
+ 
     const employees = await getEmployee();
     const roles = await getRole();
 
@@ -261,9 +246,7 @@ async function employeeRoleUpdate() {
       }
 
     ]).then(function (answer) {
-      console.log("===========")
 
-      console.log(answer.role, answer.employee);
       let role = answer.role;
       let employee = answer.employee;
       newRole(employee, role);
@@ -278,9 +261,6 @@ async function employeeRoleUpdate() {
 
 function newRole(employee, role) {
   let query = connection.query(`UPDATE employee set role_id = ${role} WHERE id=${employee};`,
-
-    // (`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES 
-    //     ('${ employee.first_name}', '${employee.last_name}', ${employee.role_id}, ${employee.manager_id});`
 
     function (err, res) {
       if (err) throw err;
@@ -318,18 +298,7 @@ async function createRole() {
       let role = answer.new_role;
       let deptId = answer.department;
       let salary = answer.salary;
-      console.log(`role ${role} and ${answer.department} salary ${answer.salary}`)
-
-
-      // const employee = {
-      //   first_name: answer.first_name,
-      //   last_name: answer.last_name,
-      //   role_id: roleID,
-      //   manager_id: answer.manager_id
-      // }
-      // // console.log(employee);
-      // //  `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${employee.first_name}, ${employee.last_name}, ${employee.role_id}, ${employee.manager_id});`;
-
+    
       addRole(role, salary, deptId);
     })
   } catch (err) {
@@ -338,8 +307,7 @@ async function createRole() {
 }
 
 async function addRole(role, salary, deptId) {
-  //titel
-  // managers.map(manager => ({ name: manager.first_name + manager.last_name, value: manager.id }))
+ 
   let query = connection.query(`INSERT INTO role (title, salary, department_id) VALUES 
       ('${role}', '${salary}', ${deptId});`,
 
@@ -407,25 +375,23 @@ async function startEnd() {
   }
 };
 
-function getRoleID(roleAnswer) {
+// function getRoleID(roleAnswer) {
 
-  // console.log(`111111 ${roleAnswer}`)
-
-  switch (roleAnswer) {
-    case "Lead Engineer":
-      return 1;
-    case "Manager":
-      return 2;
-    case "Sales Person":
-      return 3;
-    case "Accountant":
-      return 4;
-    case "Software Engineer":
-      return 5;
-    default:
-      break;
-  }
-};
+//   switch (roleAnswer) {
+//     case "Lead Engineer":
+//       return 1;
+//     case "Manager":
+//       return 2;
+//     case "Sales Person":
+//       return 3;
+//     case "Accountant":
+//       return 4;
+//     case "Software Engineer":
+//       return 5;
+//     default:
+//       break;
+//   }
+// };
 
 /////GET'S
 async function getManagers() {
