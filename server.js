@@ -166,7 +166,7 @@ async function createEmployee() {
 
     const managers = await getManagers();
 
-    inquirer.prompt([
+    await inquirer.prompt([
       {
         name: "first_name",
         type: "input",
@@ -196,7 +196,12 @@ async function createEmployee() {
 
     ]).then(function (answer) {
 
+      console.log("1111111" + answer.role);
+
       const roleID = getRoleID(answer.role);
+
+      console.log("44444" + roleID)
+      console.log(roleID)
 
       const employee = {
         first_name: answer.first_name,
@@ -204,6 +209,7 @@ async function createEmployee() {
         role_id: roleID,
         manager_id: answer.manager_id
       }
+     
       
       addEmployee(employee)
     })
@@ -220,7 +226,6 @@ function addEmployee(employee) {
     function (err, res) {
       if (err) throw err;
       console.log("Employee Added!")
-      startEnd();
 
     })
 }
@@ -375,23 +380,34 @@ async function startEnd() {
   }
 };
 
-// function getRoleID(roleAnswer) {
+function getRoleID(roleAnswer) {
+  // try {
+  //   console.log("2222222" + roleAnswer);
+  //    return await connection.query(`SELECT id FROM role WHERE title = '${roleAnswer}'`).then(res => {
+  //      console.log("333333" + res.id)
+  //      console.log(res)
+  //     return res;
+  //   });
 
-//   switch (roleAnswer) {
-//     case "Lead Engineer":
-//       return 1;
-//     case "Manager":
-//       return 2;
-//     case "Sales Person":
-//       return 3;
-//     case "Accountant":
-//       return 4;
-//     case "Software Engineer":
-//       return 5;
-//     default:
-//       break;
-//   }
-// };
+  // } catch (err) {
+  //   console.log(err);
+  // }
+
+  switch (roleAnswer) {
+    case "Lead Engineer":
+      return 1;
+    case "Manager":
+      return 2;
+    case "Sales Person":
+      return 3;
+    case "Accountant":
+      return 4;
+    case "Software Engineer":
+      return 5;
+    default:
+      break;
+  }
+};
 
 /////GET'S
 async function getManagers() {
