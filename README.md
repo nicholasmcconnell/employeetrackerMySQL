@@ -1,9 +1,11 @@
 Employee Management Tracker
 
-Overview
+Overview:
+
 This application is a command-line application for managing a company's employees using node, inquirer, and MySQL. This application allows the user to add departments, roles, employees; view departments, roles, employees and update employee roles.
 
-Utilizing the App
+Utilizing the App:
+
 The user will open the server.js file in their terminal and run the command npm i, then run the command node server.js to begin running the application.
 
 The user will then be allowed to choose the following options and abilities:
@@ -18,6 +20,7 @@ The user will then be allowed to choose the following options and abilities:
 'Exit' - Exits the application
 
 Tech used:
+
 Javascript
 Node.js
 Express
@@ -25,4 +28,5 @@ Inquirer
 MySQL Database
 
 Contributers:
+
 Nick McConnell
